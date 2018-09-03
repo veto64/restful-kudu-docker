@@ -1,4 +1,8 @@
 # Debian based Docker image for Kudu with 3 slaves
+
+The main repository is on:
+[https://calantas.org/kudu-docker/](https://calantas.org/kudu-docker)
+
 ![logo](http://getkudu.io/img/logo.png)
 
 ## License
