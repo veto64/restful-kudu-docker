@@ -1,0 +1,4 @@
+Cython==0.28.5
+kudu-python==1.7.1
+pytz==2018.5
+six==1.11.0
