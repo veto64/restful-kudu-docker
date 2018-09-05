@@ -3,7 +3,7 @@ import kudu
 from kudu.client import Partitioning
 from datetime import datetime
 
-# Connect to Kudu master server
+# Mount/connect the Kudu queen 
 client = kudu.connect(host='127.0.0.1', port=7051)
 
 
@@ -13,7 +13,11 @@ builder.add_column('ts_val', type_=kudu.unixtime_micros, nullable=False, compres
 schema = builder.build()
 
 partitioning = Partitioning().add_hash_partitions(column_names=['key'], num_buckets=3)
-client.create_table('foo', schema, partitioning)
+
+table = client.table('foo')
+scanner = table.scanner()
+result = scanner.open()
+#client.create_table('foo', schema, partitioning)
 
 """
 table = client.table('python-example')
