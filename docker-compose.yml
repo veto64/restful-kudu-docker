@@ -10,6 +10,9 @@ services:
      - 8051:8051
     volumes:
       - queen_db:/data
+    networks:
+      - queen
+
   slave1:
     image: veto64/kudu-docker
     container_name: slave1
@@ -18,6 +21,8 @@ services:
       - KUDU_MASTER=queen
     volumes:
       - slave1_db:/data
+    networks:
+      - queen      
 
   slave2:
     image: veto64/kudu-docker
@@ -27,7 +32,8 @@ services:
       - KUDU_MASTER=queen
     volumes:
       - slave2_db:/data
-
+    networks:
+      - queen      
 
   slave3:
     image: veto64/kudu-docker
@@ -37,9 +43,14 @@ services:
       - KUDU_MASTER=queen
     volumes:
       - slave3_db:/data
+    networks:
+      - queen
 
 volumes:
   queen_db:
   slave1_db:
   slave2_db:
   slave3_db:
+
+networks:
+  queen:

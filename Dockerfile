@@ -19,9 +19,22 @@ RUN apt-get -y install kudu-tserver             # Service scripts for managing k
 RUN apt-get -y install libkuduclient0           # Kudu C++ client shared library
 RUN apt-get -y install libkuduclient-dev # Kudu C++ client SDK
 
+# Install tools to work inside the containers
+RUN apt-get install -y emacs24-nox \
+net-tools \
+python-dev \
+python-pip 
+
+RUN pip install setuptools --upgrade 
+RUN pip install cython
+RUN pip install kudu-python==1.2.0
+
+
+
+
 
 RUN mkdir -m 700 -p /data && chown kudu:kudu /data
-USER kudu
+USER root
 VOLUME /data
 RUN "echo"
 COPY startup.sh /
