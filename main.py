@@ -6,7 +6,7 @@ from datetime import datetime
 
 table_name = 'master_foo'
 # Mount/connect the Kudu queen 
-client = kudu.connect(host='172.29.0.1', port=7051)
+client = kudu.connect(host='queen', port=7051)
 
 
 builder = kudu.schema_builder()
