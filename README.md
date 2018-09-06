@@ -15,14 +15,32 @@ Kudu is an open source storage engine for structured data which supports low-lat
 
 ## Startup 
 
-### Start 1 queen(master) and 3 slaves(tablet/region servers)
+1. use docker composer to start 1 queen(master) and 3 slaves(tablet/region servers)
 ```bash
 docker-compose up 
 ```
-### as deamon:
+or as deamon
 ```bash
 docker-compose up -d
 ```
+
+2.
+for testing excecute the file test.sh or  
+```bash
+
+docker run --network=kudu-docker_queen  --rm -v "`pwd`:/opt/test"  veto64/kudu-docker /usr/bin/python /opt/test/main.py
+```bash
+
+because the dockers network name rename itself on different versions check the used network name, so use the right parameter
+-network=kudu-docker_queen
+
+with:  
+```bash
+docker network list
+```bash
+
+
+
 
 
 
