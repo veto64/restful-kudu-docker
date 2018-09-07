@@ -7,6 +7,7 @@ RUN apt-get -y install apt-utils wget dstat aptitude ntp
 WORKDIR /etc/apt/sources.list.d
 RUN wget https://archive.cloudera.com/kudu/debian/jessie/amd64/kudu/archive.key -O archive.key
 RUN apt-key add archive.key
+RUN rm archive.key
 RUN wget http://archive.cloudera.com/kudu/debian/jessie/amd64/kudu/cloudera.list
 RUN apt-get update
 
