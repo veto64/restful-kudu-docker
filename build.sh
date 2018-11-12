@@ -1,1 +1,1 @@
-docker build -t veto64/kudu-docker .
+docker build -t veto64/restful-kudu-docker .
