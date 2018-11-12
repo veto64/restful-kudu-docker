@@ -1,7 +1,7 @@
 FROM debian:jessie
 # Install dependencies
 RUN apt-get update
-RUN apt-get -y install apt-utils wget dstat aptitude ntp 
+RUN apt-get -y install apt-utils wget dstat aptitude ntp supervisor
 
 # Install repository and gpg key
 WORKDIR /etc/apt/sources.list.d
@@ -27,7 +27,8 @@ RUN pip install setuptools --upgrade
 RUN pip install cython
 RUN pip install kudu-python==1.2.0 falcon gunicorn 
 
-USER root
-#COPY startup.sh /
+#USER root
+COPY supervisord.conf /etc/supervisor/supervisord.conf
 #ENTRYPOINT ["/startup.sh"]
+CMD ["/usr/bin/supervisord"]
 EXPOSE 80

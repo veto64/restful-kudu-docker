@@ -1,56 +1,13 @@
 version: '3.3'
-
 services:
-  queen:
-    image: veto64/kudu-docker
-    container_name: queen
-    command: master
+  api:
+    image: veto64/restful-kudu-docker
+    container_name: restful_api_docker
+    volumes: 
+     - "./api/:/opt/api/"
     ports:
-     - 7051:7051
-     - 8051:8051
-    volumes:
-      - queen_db:/data
+     - 80:80
     networks:
       - queen
-
-  slave1:
-    image: veto64/kudu-docker
-    container_name: slave1
-    command: tserver
-    environment:
-      - KUDU_MASTER=queen
-    volumes:
-      - slave1_db:/data
-    networks:
-      - queen      
-
-  slave2:
-    image: veto64/kudu-docker
-    container_name: slave2
-    command: tserver
-    environment:
-      - KUDU_MASTER=queen
-    volumes:
-      - slave2_db:/data
-    networks:
-      - queen      
-
-  slave3:
-    image: veto64/kudu-docker
-    container_name: slave3
-    command: tserver
-    environment:
-      - KUDU_MASTER=queen
-    volumes:
-      - slave3_db:/data
-    networks:
-      - queen
-
-volumes:
-  queen_db:
-  slave1_db:
-  slave2_db:
-  slave3_db:
-
 networks:
   queen:
