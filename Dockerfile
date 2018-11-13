@@ -25,10 +25,15 @@ python-pip
 
 RUN pip install setuptools --upgrade 
 RUN pip install cython
-RUN pip install kudu-python==1.2.0 falcon gunicorn 
+RUN pip install kudu-python==1.2.0 
+RUN pip install falcon gunicorn  
+RUN pip install PyYAML
+RUN pip install falcon-cors
 
-#USER root
-COPY supervisord.conf /etc/supervisor/supervisord.conf
-#ENTRYPOINT ["/startup.sh"]
-CMD ["/usr/bin/supervisord"]
+
 EXPOSE 80
+COPY ./docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+
+

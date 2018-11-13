@@ -4,7 +4,7 @@ services:
     image: veto64/restful-kudu-docker
     container_name: restful_api_docker
     volumes: 
-     - "./api/:/opt/api/"
+     - "./api:/opt/api/"
     ports:
      - 80:80
     networks:
