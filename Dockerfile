@@ -16,6 +16,7 @@ RUN apt-get update
 RUN apt-get install -y apt-utils
 RUN apt-get -y install libkuduclient0           # Kudu C++ client shared library
 RUN apt-get -y install libkuduclient-dev # Kudu C++ client SDK
+RUN apt-get -y install libkrb5-dev
 
 # Install tools to work inside the containers
 RUN apt-get install -y emacs24-nox \
@@ -26,9 +27,7 @@ python-pip
 RUN pip install setuptools --upgrade 
 RUN pip install cython
 RUN pip install kudu-python==1.2.0 
-RUN pip install falcon gunicorn  
-RUN pip install PyYAML
-RUN pip install falcon-cors
+RUN pip install falcon gunicorn PyYAML falcon-cors
 
 
 EXPOSE 80
