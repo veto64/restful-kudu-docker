@@ -1,7 +1,7 @@
-# Debian based Docker image for Kudu with 3 slaves
+# Python Falcon API for a Kudu ServerB
 
 The main repository is on:
-[https://calantas.org/kudu-docker/](https://calantas.org/kudu-docker)
+[https://calantas.org/kudu-docker/](https://calantas.org/restful-kudu-docker)
 
 ![logo](http://getkudu.io/img/logo.png)
 
@@ -15,29 +15,10 @@ Kudu is an open source storage engine for structured data which supports low-lat
 
 ## Startup 
 
-1. use docker composer to start 1 queen(master) and 3 slaves(tablet/region servers)
+1. use the docker composer to start the API server with 1 queen(master) and 3 slaves(tablet/region servers), they all are in the same network for the moment.
 ```bash
 docker-compose up 
 ```
-or as deamon
-```bash
-docker-compose up -d
-```
-
-2.
-for testing excecute the file test.sh or  
-```bash
-
-docker run --network=kudu-docker_queen  --rm -v "`pwd`:/opt/test"  veto64/kudu-docker /usr/bin/python /opt/test/main.py
-```bash
-
-because the dockers network name rename itself on different versions check the used network name, so use the right parameter
--network=kudu-docker_queen
-
-with:  
-```bash
-docker network list
-```bash
 
 
 
@@ -47,6 +28,7 @@ docker network list
 ### Web UI
 | Control Websiste               | Port                                              |
 | ----------------------- |-------------------------------------------------- |
+| API                     | [http://127.0.0.1:80](http://127.0.0.1:80)  |
 | Landing                 | [http://127.0.0.1:8051](http://127.0.0.1:8051)  |
 | View Slaves/Tablets     | [http://127.0.0.1:8051/tablet-servers](http://127.0.0.1:8051/tablet-servers)  |
 
