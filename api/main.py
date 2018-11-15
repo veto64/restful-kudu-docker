@@ -1,7 +1,7 @@
 #!env python
 import falcon
 import yaml
-from views import main
+from views import main, tables
 from falcon_cors import CORS
 
 
@@ -16,5 +16,6 @@ with open("config.yml", 'r') as stream:
 
 if config:
   api.add_route('/', main.Main(config))
+  api.add_route('/tables', tables.Tables(config))
 
 
