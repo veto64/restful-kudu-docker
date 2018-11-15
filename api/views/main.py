@@ -16,7 +16,8 @@ class Main:
       '_API' : 'kudu',
       'data': []
     }
-    
+
+    """    
     table_name = 'master_foo'
     client = kudu.connect(host='queen', port=7051)
     builder = kudu.schema_builder()
@@ -49,6 +50,6 @@ class Main:
       #print('key: {} name: {}'.format(i[0],i[1]))
       api['data'].append([i[0],i[1]])
 
-
+    """
     res.body = json.dumps(api)
     res.status = falcon.HTTP_200
