@@ -47,4 +47,18 @@ class Table:
     res.status = falcon.HTTP_200
 
 
+  def on_delete(self, req, res,table):
+    self.api['method'] = 'DELELTE'
+    self.api['table'] = table
+    self.api['delelted'] = False
+    client = kudu.connect(host='queen', port=7051)
+    self.api['exists'] = client.table_exists(table)
+    print(dir(client))
+
+    if self.api['exists']: 
+      self.api['delelted'] = True
+      client.delete_table(table)
+
+    res.body = json.dumps(self.api)
+    res.status = falcon.HTTP_200
 

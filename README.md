@@ -1,4 +1,4 @@
-# Python Falcon API for a Kudu ServerB
+# Python Falcon API for a Kudu Server
 
 The main repository is on:
 [https://calantas.org/kudu-docker/](https://calantas.org/restful-kudu-docker)
