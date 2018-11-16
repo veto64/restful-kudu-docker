@@ -1,7 +1,15 @@
 FROM debian:jessie
-# Install dependencies
-RUN apt-get update
-RUN apt-get -y install apt-utils wget dstat aptitude ntp supervisor
+
+# Install dependencies and tools
+RUN apt-get update && apt-get -y install apt-utils \ 
+wget \ 
+dstat \ 
+aptitude \ 
+ntp \ 
+emacs24-nox \
+net-tools \
+python-dev \
+python-pip 
 
 # Install repository and gpg key
 WORKDIR /etc/apt/sources.list.d
@@ -9,25 +17,20 @@ RUN wget https://archive.cloudera.com/kudu/debian/jessie/amd64/kudu/archive.key 
 RUN apt-key add archive.key
 RUN rm archive.key
 RUN wget http://archive.cloudera.com/kudu/debian/jessie/amd64/kudu/cloudera.list
-RUN apt-get update
 
+# Install Kudu # Kudu C++ client shared library # Kudu C++ client SDK
+RUN apt-get update && apt-get -y install libkuduclient0  \ 
+libkuduclient-dev \ 
+libkrb5-dev  
 
-# Install Kudu
-RUN apt-get install -y apt-utils
-RUN apt-get -y install libkuduclient0           # Kudu C++ client shared library
-RUN apt-get -y install libkuduclient-dev # Kudu C++ client SDK
-RUN apt-get -y install libkrb5-dev
-
-# Install tools to work inside the containers
-RUN apt-get install -y emacs24-nox \
-net-tools \
-python-dev \
-python-pip 
 
 RUN pip install setuptools --upgrade 
-RUN pip install cython
-RUN pip install kudu-python==1.2.0 
-RUN pip install falcon gunicorn PyYAML falcon-cors
+RUN pip install cython 
+RUN pip install cython kudu-python==1.2.0 \ 
+falcon \ 
+gunicorn \ 
+PyYAML \ 
+falcon-cors
 
 
 EXPOSE 80
