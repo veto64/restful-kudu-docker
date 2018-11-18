@@ -37,7 +37,8 @@ class Table:
 
     if not self.api['exists']: 
       builder = kudu.schema_builder()
-      builder.add_column('id').type(kudu.int64).nullable(False).primary_key()
+      #builder.add_column('id').type(kudu.int64).nullable(False).primary_key()
+      builder.add_column('id').type(kudu.string).nullable(False).primary_key()
       schema = builder.build()
       partitioning = Partitioning().add_hash_partitions(column_names=['id'], num_buckets=3) 
       client.create_table(table, schema, partitioning)  

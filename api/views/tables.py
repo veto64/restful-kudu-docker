@@ -10,28 +10,22 @@ class Tables:
 
   def __init__(self,config):
    self.config = config
-
-  def on_get(self, req, res):
-    api = {
+   self.api = {
       '_API' : 'tables',
-      'method' : 'get',
-      'tables': []
+      'method' : '',
+      'tables': {}
     }
 
-    table_name = 'master_foo'
+  def on_get(self, req, res):
+    self.api['method'] = 'GET'
     client = kudu.connect(host='queen', port=7051)
-    print('xxxxxxxxxxxxxxxxxxxxxxxxx')
-    print(client)
-    print('xxxxxxxxxxxxxxxxxxxxxxxxx')
-    api['tables'] = client.list_tables()
-
-    res.body = json.dumps(api)
+    tables = client.list_tables()
+    for i in tables:
+      table = client.table(i)
+      self.api['tables'][i] = str(table.schema)
+    res.body = json.dumps(self.api)
     res.status = falcon.HTTP_200
 
 
   def on_delete(self, req, res):
-    api = {
-      '_API' : 'tables',
-      'method' : 'delete',
-      'result': []
-    }  
+    self.api['method'] = 'DELETE'
