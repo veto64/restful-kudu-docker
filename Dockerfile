@@ -9,7 +9,8 @@ ntp \
 emacs24-nox \
 net-tools \
 python-dev \
-python-pip 
+python-pip \
+curl 
 
 # Install repository and gpg key
 WORKDIR /etc/apt/sources.list.d
@@ -30,7 +31,9 @@ RUN pip install cython kudu-python==1.2.0 \
 falcon \ 
 gunicorn \ 
 PyYAML \ 
-falcon-cors
+falcon-cors \ 
+sortedcontainers
+
 
 
 EXPOSE 80
