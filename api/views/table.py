@@ -49,28 +49,28 @@ class Table:
   def on_update(self, req, res,table):
     self.api['method']  = 'UPDATE'
     self.api['table']   = table
-    self.api['updated'] = False
     self.api['exists']  = False
-    self.api['error']  = []
+    self.api['update']  = []
+    self.api['error']   = []
 
     client = kudu.connect(host='queen', port=7051)
     self.api['exists'] = client.table_exists(table)
     if self.api['exists']:
+      self.api['rename'] = req.get_param('name')
+      self.api['data']   = json.load(req.bounded_stream)
       otable = client.table(table)
       alt = client.new_table_alterer(otable)
-      self.api['name'] = req.get_param('name')
-      self.api['data'] = json.load(req.bounded_stream)
-
       if self.api['data']:
         if 'cols' in self.api['data']:
-          try:
-            for i in self.api['data']['cols']:
+          for i in self.api['data']['cols']:
+            try:
               alt.alter_column(i,self.api['data']['cols'][i])
-            alt.alter()
-          except Exception as e:
-            self.api['error'].append(str(e))
+              alt.alter()
+              self.api['update'].append([i,self.api['data']['cols'][i]])
+            except Exception as e:
+              self.api['error'].append(str(e))
 
-      if self.api['name']:
+      if self.api['rename']:
         try:
           t = alt.rename(self.api['rename']).alter()
         except Exception as e:

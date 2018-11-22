@@ -20,6 +20,7 @@ class Tables:
     self.api['method'] = 'GET'
     client = kudu.connect(host='queen', port=7051)
     tables = client.list_tables()
+
     for i in tables:
       table = client.table(i)
       self.api['tables'][i] = str(table.schema)
