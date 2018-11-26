@@ -32,12 +32,33 @@ class Table:
     self.api['method'] = 'PUT'
     self.api['table'] = table
     self.api['created'] = False
+
+    self.api['data']   = json.load(req.bounded_stream)
+
     client = kudu.connect(host='queen', port=7051)
     self.api['exists'] = client.table_exists(table)
 
     if not self.api['exists']: 
       builder = kudu.schema_builder()
       builder.add_column('id').type(kudu.int64).nullable(False).primary_key()
+      if self.api['data']:
+        for i in self.api['data']:
+          if self.api['data'][i] == 'int':
+            builder.add_column(i).type(kudu.int64)
+          elif self.api['data'][i] == 'time':
+            builder.add_column(i).type(kudu.unixtime_micros)
+          elif self.api['data'][i] == 'float':
+            builder.add_column(i).type(kudu.float)
+          elif self.api['data'][i] == 'double':
+            builder.add_column(i).type(kudu.float)
+          elif self.api['data'][i] == 'decimal':
+            builder.add_column(i).type(kudu.decimal)
+          elif self.api['data'][i] == 'binary':
+            builder.add_column(i).type(kudu.binary)
+          elif self.api['data'][i] == 'bool':
+            builder.add_column(i).type(kudu.binary)
+          else:
+            builder.add_column(i).type(kudu.bool)
       schema = builder.build()
       partitioning = Partitioning().add_hash_partitions(column_names=['id'], num_buckets=3) 
       client.create_table(table, schema, partitioning)  
