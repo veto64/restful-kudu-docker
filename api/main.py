@@ -16,7 +16,8 @@ with open("config.yml", 'r') as stream:
 
 if config:
   api.add_route('/', tables.Tables(config))
-  api.add_route('/{table}', table.Table(config))
   api.add_route('/tables', tables.Tables(config))
+  api.add_route('/{table}', table.Table(config))
+
 
 
