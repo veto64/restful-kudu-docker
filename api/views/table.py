@@ -16,8 +16,12 @@ class Table:
      'table' : table
      }
     client = kudu.connect(host='queen', port=7051)
-    api['exists'] = client.table_exists(table)
-    res.body = json.dumps(self.api)
+    if client.table_exists(table):
+      api['success'] = 'Table ok'
+    else:
+      api['errors'].append('Table does not exist')
+
+    res.body = json.dumps(api)
     res.status = falcon.HTTP_200
 
 
@@ -32,12 +36,15 @@ class Table:
     if not client.table_exists(table): 
       builder = kudu.schema_builder()
       builder.add_column('id').type(kudu.int64).nullable(False).primary_key()
+
       if data:
         for i in data:
-          if data[i] == 'int':
+          if data[i] == 'string':
+            builder.add_column(i).type(kudu.string)
+          elif data[i] == 'int':
             builder.add_column(i).type(kudu.int64)
-          #elif data[i] == 'time':
-          #  builder.add_column(i).type(kudu.unixtime_micros)
+          elif data[i] == 'time':
+            builder.add_column(i).type(kudu.unixtime_micros)
           elif data[i] == 'float':
             builder.add_column(i).type(kudu.float)
           elif data[i] == 'double':
@@ -47,9 +54,10 @@ class Table:
           elif data[i] == 'binary':
             builder.add_column(i).type(kudu.binary)
           elif data[i] == 'bool':
-            builder.add_column(i).type(kudu.binary)
-          else:
             builder.add_column(i).type(kudu.bool)
+          else:
+            builder.add_column(i).type(kudu.string)
+
       schema = builder.build()
       partitioning = Partitioning().add_hash_partitions(column_names=['id'], num_buckets=3) 
       client.create_table(table, schema, partitioning)  
@@ -106,7 +114,7 @@ class Table:
       client.delete_table(table)
       api['success'] = True
     else:
-      api['error'] = ['Table does not exists']
+      api['error'] = ['Table does not exist']
 
     res.body = json.dumps(api)
     res.status = falcon.HTTP_200
