@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   queen:
-    image: veto64/kudu-docker
+    image: veto64/kudu-docker:14
     container_name: queen
     command: master
     ports:
@@ -14,7 +14,7 @@ services:
       - queen
 
   slave1:
-    image: veto64/kudu-docker
+    image: veto64/kudu-docker:14
     container_name: slave1
     command: tserver
     environment:
@@ -25,7 +25,7 @@ services:
       - queen      
 
   slave2:
-    image: veto64/kudu-docker
+    image: veto64/kudu-docker:14
     container_name: slave2
     command: tserver
     environment:
@@ -36,7 +36,7 @@ services:
       - queen      
 
   slave3:
-    image: veto64/kudu-docker
+    image: veto64/kudu-docker:14
     container_name: slave3
     command: tserver
     environment:

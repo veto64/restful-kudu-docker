@@ -3,6 +3,7 @@ import time
 import falcon
 import json
 import kudu
+import uuid
 from kudu.client import Partitioning
 from datetime import datetime
 
@@ -24,7 +25,7 @@ class Row:
         table   = client.table(table)
         scanner = table.scanner()
         #api['scanner'] = dir(scanner)
-        scanner.add_predicate(table['id'] == row_id )
+        scanner.add_predicate(table['_id'] == row_id )
         ret = scanner.open().read_all_tuples()
         api['ret'] =ret
       else:
@@ -37,7 +38,6 @@ class Row:
 
 
   def on_put(self, req, res,table,row):
-    data   = json.load(req.bounded_stream)
     api = {
      'table'  : table,
      'success': False,
@@ -46,26 +46,43 @@ class Row:
     client = kudu.connect(host='queen', port=7051)
     session = client.new_session()
     if client.table_exists(table): 
+      tb = client.table(table)
+      sm = tb.schema
+      data   = json.load(req.bounded_stream)
       table   = client.table(table)
+      schema = {}      
+      for i in sm:
+        schema[i.name] = i.type.name
+
+
+      scanner = table.scanner()
+      #scanner.set_limit(1) #no supported with 1.2
+      api['scanner'] = dir(scanner)
+      #scanner.add_predicate(table['_id'] == row_id )
+      print('xxxxxxxxxxxxxxxxxxxxxxxxxxx')
+      print(schema)
+      print('xxxxxxxxxxxxxxxxxxxxxxxxxxx')
+
+
+
+      """
       if row.isdigit():
         api['update'] = True
       else:
         #adpi['dir-table'] = dir(table)
         op = table.new_insert()
-        op['id'] = 2
+        op['_id'] = uuid.uuid4().int>>1
+ 
         op['style'] = 'xxxx'
         op['qty'] = 1
         op['cost'] = 1
         op['price'] = 1
         op['hash'] = 'xxxxx'
-
-        #for k,v in data.items():
-        #  op[k]= v
         session.apply(op)
-        #api['op'] = str(dir(op))
         session.flush()
+        api['success'] = True
         api['insert'] = True
-                        
+       """
     else:
       api['errors'].append('Table does not exist')
 

@@ -35,7 +35,7 @@ class Table:
     client = kudu.connect(host='queen', port=7051)
     if not client.table_exists(table): 
       builder = kudu.schema_builder()
-      builder.add_column('id').type(kudu.int64).nullable(False).primary_key()
+      builder.add_column('_id').type(kudu.int64).nullable(False).primary_key()
 
       if data:
         for i in data:
@@ -59,7 +59,7 @@ class Table:
             builder.add_column(i).type(kudu.string)
 
       schema = builder.build()
-      partitioning = Partitioning().add_hash_partitions(column_names=['id'], num_buckets=3) 
+      partitioning = Partitioning().add_hash_partitions(column_names=['_id'], num_buckets=3) 
       client.create_table(table, schema, partitioning)  
       api['success'] = True
 

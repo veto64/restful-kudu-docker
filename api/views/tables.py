@@ -5,6 +5,7 @@ import json
 import kudu
 from kudu.client import Partitioning
 from datetime import datetime
+import sortedcontainers
 
 class Tables:
 
@@ -23,10 +24,16 @@ class Tables:
 
     for i in tables:
       table = client.table(i)
-      self.api['tables'][i] = str(table.schema)
+      sm = table.schema
+      self.api['tables'][i] = sortedcontainers.SortedDict()
+      for ii in sm:
+        self.api['tables'][i][ii.name] = {
+          'type:': ii.type.name,
+          'nullable:': ii.nullable
+        }
+
     res.body = json.dumps(self.api)
     res.status = falcon.HTTP_200
-
 
   def on_delete(self, req, res):
     self.api['method'] = 'DELETE'
